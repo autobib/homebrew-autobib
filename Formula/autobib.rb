@@ -6,6 +6,12 @@ class Autobib < Formula
   license "AGPL-3.0-or-later"
   head "https://github.com/autobib/autobib.git", branch: "main"
 
+  bottle do
+    root_url "https://github.com/autobib/homebrew-autobib/releases/download/autobib-0.4.0"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:  "3af3d0fe01ca05abbe269b6b33a7580e9cc68883735b2644198a33af8186c766"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "7dd7a44440ef36c8d59b780ede53814adaa8c8638b017a5eaa1ead0a485d2f14"
+  end
+
   depends_on "cargo-about" => :build
   depends_on "rust" => :build
 
