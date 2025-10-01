@@ -4,6 +4,10 @@ class Autobib < Formula
   url "https://github.com/autobib/autobib/archive/refs/tags/v0.4.0.tar.gz"
   sha256 "77c3ffcd9a3fcdb18f13ef0ac030fd854bfbaf822954edd41c4079de30036a9b"
   license "AGPL-3.0-or-later"
+
+  # remove revision on next release
+  revision 1
+
   head "https://github.com/autobib/autobib.git", branch: "main"
 
   bottle do
