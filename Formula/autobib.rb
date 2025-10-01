@@ -11,9 +11,11 @@ class Autobib < Formula
   head "https://github.com/autobib/autobib.git", branch: "main"
 
   bottle do
-    root_url "https://github.com/autobib/homebrew-autobib/releases/download/autobib-0.4.0"
-    sha256 cellar: :any_skip_relocation, arm64_tahoe:  "3af3d0fe01ca05abbe269b6b33a7580e9cc68883735b2644198a33af8186c766"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "7dd7a44440ef36c8d59b780ede53814adaa8c8638b017a5eaa1ead0a485d2f14"
+    root_url "https://github.com/autobib/homebrew-autobib/releases/download/autobib-0.4.0_1"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "b9c12c1251c948156f866b2f251a0b40d3bd1ed8ad9f944a81a78fc783d731b1"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "1d982465e48f86f0c3e7f26f3acbadfe8e1f45269e1f5c255f6d68a506ae3800"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "30bcad9730f6e9da112a61ce1c00107e14a064dbe99ae011fe3aef174daa367f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f4dc06ba7ed74825a8ce48c17f483bda459a2b9a55278842708a69dbc2eae0ae"
   end
 
   depends_on "cargo-about" => :build
