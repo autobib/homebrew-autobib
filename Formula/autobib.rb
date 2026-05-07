@@ -1,8 +1,8 @@
 class Autobib < Formula
   desc "Command-line tool for managing bibliographic records"
   homepage "https://github.com/autobib/autobib"
-  url "https://github.com/autobib/autobib/archive/refs/tags/v0.6.0.tar.gz"
-  sha256 "4f641d455075af0baac3a67e28388eb8bcf837c5002c70959efa3a52e5681d38"
+  url "https://github.com/autobib/autobib/archive/refs/tags/v0.6.1.tar.gz"
+  sha256 "859432b9591c8d63cc047aaddc214c1c9f93047ba1ba327ac5ce22f62bc8b75e"
   license "AGPL-3.0-or-later"
 
   head "https://github.com/autobib/autobib.git", branch: "main"
