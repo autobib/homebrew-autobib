@@ -18,11 +18,6 @@ jobs:
       contents: read
       pull-requests: read
     steps:
-      - name: Install Homebrew on Linux/ARM
-        if: matrix.os == 'ubuntu-24.04-arm'
-        run: |
-          NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
       - name: Set up Homebrew
         id: set-up-homebrew
         uses: Homebrew/actions/setup-homebrew@main
