@@ -1,0 +1,84 @@
+name: formula bump
+
+on:
+  workflow_dispatch:
+    inputs:
+      formula:
+        required: true
+        type: string
+      release_tag:
+        required: true
+        type: string
+
+jobs:
+  bump-formula-pr:
+    environment: pr-automation
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Process inputs
+        id: inputs
+        env:
+          FORMULA: ${{ inputs.formula }}
+          RELEASE_TAG: ${{ inputs.release_tag }}
+        shell: bash
+        run: |
+          if [[ "$FORMULA" =~ ^[A-Za-z0-9@._+-]+$ ]]; then
+            echo "Formula: $FORMULA"
+            echo "formula=$FORMULA" >> "$GITHUB_OUTPUT"
+          else
+            echo "Invalid value for input 'formula': $FORMULA"
+            exit 1
+          fi
+          if [[ "$RELEASE_TAG" =~ ^v[0-9]+(\.[0-9]+)(\.[0-9]+)$ ]]; then
+            release_version="${RELEASE_TAG:1}"
+            echo "Release version: $release_version"
+            echo "release_version=$release_version" >> "$GITHUB_OUTPUT"
+          else
+            echo "Invalid value for input 'release_tag': $RELEASE_TAG"
+            exit 1
+          fi
+
+      - name: Set up Homebrew
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@main
+        with:
+          token: ${{ secrets.HOMEBREW_TAP_PR_ACCESS_TOKEN }}
+
+      - name: Set up git
+        uses: Homebrew/actions/git-user-config@main
+
+      - name: Cache Homebrew Bundler RubyGems
+        uses: actions/cache@v5
+        with:
+          path: ${{ steps.set-up-homebrew.outputs.gems-path }}
+          key: brew-rubygems-${{ steps.set-up-homebrew.outputs.gems-hash }}
+          restore-keys: brew-rubygems-
+
+      - name: Bump formula and create PR
+        id: bump
+        env:
+          HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.HOMEBREW_TAP_PR_ACCESS_TOKEN }}
+        shell: bash
+        run: |
+          tmpfile=$(mktemp)
+          brew bump-formula-pr --no-fork --strict --online --no-browse \
+            --version ${{ steps.inputs.outputs.release_version }} \
+            "${{ github.repository }}/${{ steps.inputs.outputs.formula }}" \
+            | tee "$tmpfile"
+          pr_url=$(tail -1 "$tmpfile")
+          rm "$tmpfile"
+          if [[ "$pr_url" =~ ^${{ github.server_url }}/${{ github.repository }}/pull/[0-9]+$ ]]; then
+            echo "pr_url=$pr_url" >> "$GITHUB_OUTPUT"
+          else
+            echo "Failed to extract the URL to the PR from the last line printed by 'brew bump-formula-pr'."
+            exit 1
+          fi
+
+      - name: Label PR as 'auto-pull'
+        env:
+          GH_TOKEN: ${{ secrets.HOMEBREW_TAP_PR_ACCESS_TOKEN }}
+        shell: bash
+        run: |
+          gh pr edit ${{ steps.bump.outputs.pr_url }} \
+            --add-label 'auto-pull' \
+            --repo "$GITHUB_REPOSITORY"
