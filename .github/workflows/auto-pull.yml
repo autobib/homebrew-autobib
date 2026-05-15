@@ -1,6 +1,8 @@
 name: auto-pull
 
 on:
+  # Runs on the default branch.
+  # Triggered by the completion of the 'tests' workflow on matching branches.
   workflow_run:
     workflows:
       - "tests"
@@ -12,11 +14,16 @@ on:
 jobs:
   label-pr:
     environment: pr-automation
+    # The triggering workflow must be triggered by a pull request,
+    # and the head repository of the pull request must not be a fork.
     if: >
       github.event.workflow_run.event == 'pull_request' &&
-      github.event.workflow_run.head_repository.full_name == github.repository
+      github.event.workflow_run.head_repository.id == github.repository_id
     runs-on: ubuntu-24.04
     steps:
+      # Find the pull request whose source branch is the head branch of the triggering workflow.
+      # Output the pull request's URL if it is open and has the 'auto-pull' label.
+      # Otherwise, output the empty string so that no further action is taken.
       - name: Find PR associated with workflow run
         id: get-pr
         env:
@@ -32,6 +39,12 @@ jobs:
           )
           echo "pr_url=$pr_url" >> "$GITHUB_OUTPUT"
 
+      # Determine how to change the labelling of the pull request.
+      # If the pull request has a clean status (mergeable and checks have passed),
+      #   then the 'pr-pull' label should be applied.
+      # If the triggering workflow has a conclusion that is not 'success', 'skipped', or 'neutral',
+      #   then the 'auto-pull' label should be removed.
+      # Otherwise, do nothing.
       - name: Determine next step
         id: determine-action
         env:

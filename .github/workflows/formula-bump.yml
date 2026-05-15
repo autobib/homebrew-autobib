@@ -1,6 +1,7 @@
 name: formula bump
 
 on:
+  # Runs on the default branch.
   workflow_dispatch:
     inputs:
       formula:
@@ -41,6 +42,8 @@ jobs:
         id: set-up-homebrew
         uses: Homebrew/actions/setup-homebrew@main
         with:
+          # The token is used for cloning and pushing.
+          # It must have write access to repo contents.
           token: ${{ secrets.HOMEBREW_TAP_PR_ACCESS_TOKEN }}
 
       - name: Set up git
@@ -56,6 +59,9 @@ jobs:
       - name: Bump formula and create PR
         id: bump
         env:
+          # Events created by the default GITHUB_TOKEN do not trigger workflows.
+          # We use a personal access token so that PR creation triggers the tests workflow.
+          # The PAT has write access to PRs.
           HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.HOMEBREW_TAP_PR_ACCESS_TOKEN }}
         shell: bash
         run: |
@@ -75,6 +81,7 @@ jobs:
 
       - name: Label PR as 'auto-pull'
         env:
+          # Using a personal access token with write access to PRs.
           GH_TOKEN: ${{ secrets.HOMEBREW_TAP_PR_ACCESS_TOKEN }}
         shell: bash
         run: |
