@@ -1,7 +1,6 @@
 name: formula bump
 
 on:
-  # Runs on the default branch.
   workflow_dispatch:
     inputs:
       formula:
