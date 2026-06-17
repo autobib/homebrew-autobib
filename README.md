@@ -10,6 +10,7 @@ For example, to install the main [Autobib](https://github.com/autobib/autobib) f
 
 Alternatively, run `brew tap autobib/autobib` followed by `brew install <formula>`.
 Or, in a [`Brewfile`](https://docs.brew.sh/Brew-Bundle-and-Brewfile):
+
 ```ruby
 tap "autobib/autobib"
 brew "<formula>"

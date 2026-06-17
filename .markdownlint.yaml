@@ -1,0 +1,4 @@
+# Configuration for markdownlint
+
+# MD013/line-length
+MD013: false
