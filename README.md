@@ -4,16 +4,19 @@ Homebrew [tap](https://docs.brew.sh/Taps) for Autobib formulae.
 
 ## How to use the tap
 
-Run `brew install autobib/autobib/<formula>` to install a formula.
+To install a formula, run:
+
+```sh
+brew install autobib/autobib/<formula>
+```
 
 For example, to install the main [Autobib](https://github.com/autobib/autobib) formula, run `brew install autobib/autobib/autobib`.
 
-Alternatively, run `brew tap autobib/autobib` followed by `brew install <formula>`.
-Or, in a [`Brewfile`](https://docs.brew.sh/Brew-Bundle-and-Brewfile):
+Alternatively, if you prefer to use [`brew bundle`](https://docs.brew.sh/Brew-Bundle-and-Brewfile), add the following declarations to your `Brewfile`:
 
 ```ruby
 tap "autobib/autobib"
-brew "<formula>"
+brew "autobib/autobib/<formula>", trusted: true
 ```
 
 ## Updating formulae
