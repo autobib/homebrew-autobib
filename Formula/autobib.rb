@@ -3,11 +3,9 @@ class Autobib < Formula
   homepage "https://github.com/autobib/autobib"
   url "https://github.com/autobib/autobib.git",
     using:    :git,
-    tag:      "v0.7.0",
-    revision: "4e242ba2cfc53eaaf5c5240b74130fc170ed9eaf"
+    tag:      "v0.7.1",
+    revision: "72ecddfe4e4b5a5c117e31c5db6160f81e1724c6"
   license "AGPL-3.0-or-later"
-
-  revision 1
 
   head "https://github.com/autobib/autobib.git", branch: "main"
 
